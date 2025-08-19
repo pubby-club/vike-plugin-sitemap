@@ -91,11 +91,25 @@ const EntryBuilder = {
   }
 };
 
+/** 
+ * When suitable, turns Windows-style local path separator into POSIX's, making it URL compatible
+ */
+const filePathToURLPath = (path: string) => process.platform == "win32" ? path.replace(/[\\/]+/g, '/') : path;
+
 function _resolver (rootDir: string) {
   return (dir: Dirent) => {
+    /** 
+     * Depending on the OS running the plugin, will obviously output OS flavored path (looking at you Windows...) 
+     * that might need to be renderer URL-compatible
+     */
     // eslint-disable-next-line deprecation/deprecation (relative to #7)
     const path = dir.parentPath ?? dir.path;
-    const shortPath = path.substring(rootDir.length);
+
+    //
+    let shortPath = path.substring(rootDir.length); // first, remove the part of the path that's local-only, and that will not be exposed to the web
+    shortPath = filePathToURLPath(shortPath); // turn any backslashes into URL-compatible (POSIX) plain old slashes
+
+    //
     const spSegments = shortPath.split("/").filter(Boolean);
   
     //
