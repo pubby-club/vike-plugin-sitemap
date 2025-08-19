@@ -26,8 +26,22 @@ const defaultOptions: Required<SitemapPluginOptions> = {
   },
 };
 
+/** inplace removes first-order undefined properties from an object */
+function removeUndefinedProps(objToRemoveFrom: object) {
+  for (const key in objToRemoveFrom) {
+    if (objToRemoveFrom[key] === undefined) {
+      delete objToRemoveFrom[key];
+    }
+  }
+  return objToRemoveFrom; // optional, for chaining
+}
+
 // Vite Plugin
 export default function VikeSitemapPlugin(options: SitemapPluginOptions): PluginOption {
+  // remove undefined props, so that merging keeps default options 
+  removeUndefinedProps(options);
+
+  //
   const mergedOptions: typeof defaultOptions = {
     ...defaultOptions,
     ...options,

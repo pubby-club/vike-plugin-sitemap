@@ -10,7 +10,7 @@
             "serverReadyAction": {
                 "action": "debugWithChrome",
                 "pattern": "Local:   http://localhost:([0-9]+)/",
-                "uriFormat": "http://localhost:%s",
+                "uriFormat": "http://localhost:%s/sitemap.xml",
                 "killOnServerStop": true
             }
         }

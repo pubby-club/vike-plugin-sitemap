@@ -2,7 +2,7 @@
   "scripts": {
     "dev": "vike dev",
     "build": "cross-env BASE_URL=http://my-prod-website.org vike build",
-    "preview": "vike preview"
+    "preview": "cross-env BASE_URL=http://my-preview-website.org vike preview"
   },
   "dependencies": {
     "vike": "^0.4.225",
