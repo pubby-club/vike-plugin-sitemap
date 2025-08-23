@@ -15,7 +15,8 @@
   "scripts": {
     "build": "tsc",
     "build:dev": "tsc --sourceMap",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm run build",
+    "prepack": "pnpm run build"
   },
   "peerDependencies": {
     "vite": "^6"

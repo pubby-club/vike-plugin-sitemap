@@ -272,12 +272,14 @@ export async function generateSitemapContent(options: Required<SitemapPluginOpti
   const {
     pagesDir,
     customEntries,
+    sitemapGenerator,
     debug,
   } = options;
 
   const resolvedPagesDir = resolve(process.cwd(), pagesDir);
   const existingLocations = new Map<string, string>();
-  const entries = await getSitemapEntries(options, resolvedPagesDir);
+  const initialEntries = await getSitemapEntries(options, resolvedPagesDir);
+  const entries = sitemapGenerator(initialEntries);
 
   // Check for duplicate custom URLs
   for (const entry of customEntries) {
