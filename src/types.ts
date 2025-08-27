@@ -127,6 +127,25 @@ export type SitemapPluginOptions = {
    */
   customEntries?: SitemapEntry[];
 
+  /**
+   * A function to modify the parsed sitemap entries before custom entries are added.
+   * Receives the entries generated from the pages directory and can filter, modify, or transform them.
+   * Custom entries are added AFTER this function is applied.
+   * @type {(entries: SitemapEntry[]) => SitemapEntry[]}
+   * @default (entries) => entries
+   * @example
+   * // Filter out certain entries
+   * (entries) => entries.filter(entry => !entry.loc.includes('/admin'))
+   *
+   * @example
+   * // Modify priorities based on URL patterns
+   * (entries) => entries.map(entry => ({
+   *   ...entry,
+   *   priority: entry.loc.includes('/blog') ? 0.8 : entry.priority
+   * }))
+   */
+  sitemapGenerator?: (entries: SitemapEntry[]) => SitemapEntry[];
+
   /** 
    * defines how sitemap generation should behave when clashing definitions occurs
    * @type {ClashingPathsResolutionType}

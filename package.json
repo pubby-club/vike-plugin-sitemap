@@ -1,6 +1,6 @@
 {
   "name": "@qalisa/vike-plugin-sitemap",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "An unofficial Vike plugin to automagically generate sitemap and robots.txt files",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,7 +15,8 @@
   "scripts": {
     "build": "tsc",
     "build:dev": "tsc --sourceMap",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm run build",
+    "prepack": "pnpm run build"
   },
   "peerDependencies": {
     "vite": "^6"

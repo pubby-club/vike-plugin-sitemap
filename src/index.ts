@@ -1,5 +1,5 @@
 import { PluginOption, ViteDevServer } from 'vite';
-import { SitemapPluginOptions } from './types.js';
+import { SitemapPluginOptions, SitemapEntry } from './types.js';
 import { generateSitemapContent, writeSitemapToDisk } from './generators/sitemap.js';
 import { generateRobotsTxtContent, robotsFileName, writeRobotsTxtToDisk } from './generators/robots.js';
 
@@ -12,6 +12,7 @@ const defaultOptions: Required<SitemapPluginOptions> = {
   defaultChangefreq: 'weekly',
   defaultPriority: 0.5,
   customEntries: [],
+  sitemapGenerator: (entries: SitemapEntry[]) => entries,
   formatDate: (date: Date) => date.toISOString(),
   robots: {
     userAgent: '*',
