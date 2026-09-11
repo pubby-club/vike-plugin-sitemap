@@ -31,6 +31,8 @@ export type SitemapEntry = {
    * @type {number | undefined}
    */
   priority?: number;
+
+  alternates?: Array<{ hreflang: string, href: string }>
 };
 
 /**

@@ -96,7 +96,7 @@ const EntryBuilder = {
  */
 const filePathToURLPath = (path: string) => process.platform == "win32" ? path.replace(/[\\/]+/g, '/') : path;
 
-function _resolver (rootDir: string) {
+function _resolver(rootDir: string) {
   return (dir: Dirent) => {
     /** 
      * Depending on the OS running the plugin, will obviously output OS flavored path (looking at you Windows...) 
@@ -111,35 +111,35 @@ function _resolver (rootDir: string) {
 
     //
     const spSegments = shortPath.split("/").filter(Boolean);
-  
+
     //
     type Resolution = ResolvedPage["resolution"];
     const resolve = (): Resolution => {
       //
       const segmentsOut = [];
-  
+
       //
       for (const segment of spSegments) {
         //
         if (segment == "index") continue;
         if (segment == "pages") continue;
         if (segment.startsWith("(") && segment.endsWith(")")) continue;
-  
+
         //
         if (segment.startsWith("_")) return { rejectReason: "specialFolder" };
         if (segment.startsWith("@")) return { rejectReason: "SSGUnhandled" };
-  
+
         //
         segmentsOut.push(segment);
       }
-  
+
       //
       const out = segmentsOut.join("/") + "/";
-  
+
       //
       return segmentsOut.length ? "/" + out : out;
     }
-  
+
     //
     return {
       shortPath,
@@ -297,18 +297,22 @@ export async function generateSitemapContent(options: Required<SitemapPluginOpti
 
   // Generate XML entries
   const xmlEntries = entries.map((entry) => {
+    const alternates = entry.alternates ?? []
     let xml = '  <url>\n';
     xml += `    <loc>${entry.loc}</loc>\n`;
     if (entry.lastmod) xml += `    <lastmod>${entry.lastmod}</lastmod>\n`;
     if (entry.changefreq) xml += `    <changefreq>${entry.changefreq}</changefreq>\n`;
     if (entry.priority !== undefined) xml += `    <priority>${entry.priority}</priority>\n`;
+    for (const alternate of alternates) {
+      xml += `    <xhtml:link rel="alternate" hreflang="${alternate.hreflang}" href="${alternate.href}" />\n`
+    }
     xml += '  </url>';
     return xml;
   });
 
   // Return the complete XML document
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${xmlEntries.join('\n')}
 </urlset>`;
 }
